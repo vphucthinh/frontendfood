@@ -1,0 +1,18 @@
+.profile-foruser {
+  padding: 20px;
+}
+
+.profile-details, .account-settings, .favorite-items {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+p {
+  margin: 5px 0;
+}
