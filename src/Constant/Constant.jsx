@@ -24,6 +24,7 @@ export const Constants = {
         CART: {
             ADDITEM: "cart/addOneToItem",
             REMOVEITEM: "cart/removeOneFromItem",
+            GETS: "cart/get",
         },
         PROFILE: {
             USER: "user/me",
