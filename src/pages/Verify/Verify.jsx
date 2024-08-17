@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import { Constants } from '../../Constant/Constant';
+import api from "../../API/api.jsx";
 
 const Verify = () => {
   const [searchParams] = useSearchParams();
@@ -16,7 +17,9 @@ const Verify = () => {
     try {
       console.log("Verifying payment with data:", { success, orderId });
 
-      const response = await axios.post(
+      console.log("it is token from verify: " + token );
+
+      const response = await api.post(
         `${Constants.API_URL}${Constants.API_ENDPOINTS.ORDER.VERIFY}`,
         { success, orderId },
         {
@@ -29,7 +32,7 @@ const Verify = () => {
 
       console.log("Verification response:", response);
 
-      if (response.data.success) {
+      if (response.success) {
         navigate("/myorders");
       } else {
         navigate("/");

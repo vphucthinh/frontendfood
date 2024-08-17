@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import "./MyOrders.css";
 import { StoreContext } from '../../context/StoreContext';
-import axios from 'axios';
+import {jwtDecode} from 'jwt-decode'; // Import jwt-decode
+import api from '../../API/api.jsx';
 import { Constants } from '../../Constant/Constant';
 import { assets } from '../../assets/assets';
 
@@ -9,11 +10,19 @@ const MyOrders = () => {
     const { token } = useContext(StoreContext);
     const [data, setData] = useState([]);
 
-    const fetchOrders = async () => {
+    // Decode the token to get the payload (including userId)
+    let userId;
+    if (token) {
+        const decodedToken = jwtDecode(token);
+        userId = decodedToken.id; // Assuming userId is a field in your token's payload
+        console.log("it is from myorder: "+ userId);
+    }
+
+    const fetchOrders = async (userId) => {
         try {
-            const response = await axios.get(
-                `${Constants.API_URL}${Constants.API_ENDPOINTS.ORDER.LIST}`,
-                {},
+            const response = await api.post(
+                `${Constants.API_URL}${Constants.API_ENDPOINTS.ORDER.USERORDER}`,
+                { userId },
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -21,18 +30,19 @@ const MyOrders = () => {
                     },
                 }
             );
-            setData(response.data.data);
-            console.log(response.data.data);
+            console.log("it is from myorder to get data: "+ response.data);
+            setData(response.data);
+
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
     };
 
     useEffect(() => {
-        if (token) {
-            fetchOrders();
+        if (token && userId) {
+            fetchOrders(userId);
         }
-    }, [token]);
+    }, [token, userId]);
 
     return (
         <div className="my-orders">
@@ -49,7 +59,7 @@ const MyOrders = () => {
                         <p>${order.amount}.00</p>
                         <p>Items: {order.items.length}</p>
                         <p><span>&#x25cf;</span> <b>{order.status}</b></p>
-                        <button onClick={fetchOrders}>Track Order</button>
+                        <button onClick={() => fetchOrders(userId)}>Track Order</button>
                     </div>
                 ))}
             </div>

@@ -179,7 +179,7 @@ const StoreContextProvider = (props) => {
             if (response.success) {
                 setCartItems(response.cartData);
             } else {
-                console.error('Error loading cart:', response.data.message || 'Unknown error');
+                console.error('Error loading cart:', response.message || 'Unknown error');
             }
         } catch (error) {
             console.error('Error to load cart:', error);
