@@ -185,20 +185,24 @@ const StoreContextProvider = (props) => {
             console.error('Error to load cart:', error);
         }
     };
-    
-    
+
+
 
     useEffect(() => {
         async function loadData() {
             await fetchFoodList();
             const token = sessionStorage.getItem("atoken");
             if (token) {
+                console.log("Token found:", token);  // Debug log to check token
                 setToken(token);
                 await loadCartData(token);
+            } else {
+                console.warn("No token found in sessionStorage");
             }
         }
         loadData();
     }, []);
+
 
     const contextValue = {
         food_list,
